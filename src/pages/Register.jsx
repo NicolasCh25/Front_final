@@ -1,102 +1,159 @@
 import { useState } from "react";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { Link } from "react-router";
-
+import { useForm } from "react-hook-form";
+import { ToastContainer } from "react-toastify";
+import { useFetch } from "../hooks/useFetch";
 
 export const Register = () => {
-    const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-    return (
-        <div className="flex flex-col sm:flex-row h-screen">
+  const fetchDataBackend = useFetch();
 
-            {/* Sección de formulario de registro */}
-            <div className="w-full sm:w-1/2 h-screen bg-white flex justify-center items-center">
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-                <div className="md:w-4/5 sm:w-full">
-                    {/* Contenedor del formulario */}
+  const registerUser = async (dataForm) => {
+    const url = `${import.meta.env.VITE_BACKEND_URL}/registro`;
+    await fetchDataBackend(url, dataForm, "POST");
+  };
 
-                    <h1 className="text-3xl font-semibold mb-2 text-center uppercase text-gray-500">Bienvenido(a)</h1>
-                    <small className="text-gray-400 block my-4 text-sm">Por favor ingresa tus datos</small> 
-                    
-                    <form>
+  return (
+    <div className="relative flex items-center justify-center min-h-screen py-8 overflow-y-auto bg-gray-100">
 
-                        {/* Campo para nombre */}
-                        <div className="mb-3">
-                            <label className="mb-2 block text-sm font-semibold">Nombre</label>
-                            <input type="text" placeholder="Ingresa tu nombre" className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
-                        </div>
+      <ToastContainer />
 
-                        {/* Campo para apellido */}
-                        <div className="mb-3">
-                            <label className="mb-2 block text-sm font-semibold">Apellido</label>
-                            <input type="text" placeholder="Ingresa tu apellido" className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
-                        </div>
+      {/* Fondo */}
+      <div className="absolute inset-0 bg-[url('/public/images/esfot.jpg')] bg-no-repeat bg-cover bg-center opacity-40"></div>
+      <div className="absolute inset-0 bg-black/40"></div>
 
-                        {/* Campo para dirección */}
-                        <div className="mb-3">
-                            <label className="mb-2 block text-sm font-semibold">Dirección</label>
-                            <input type="text" placeholder="Ingresa tu dirección de domicilio" className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
-                        </div>
-                        
-                        {/* Campo para celular */}
-                        <div className="mb-3">
-                            <label className="mb-2 block text-sm font-semibold">Celular</label>
-                            <input type="number" placeholder="Ingresa tu celular" className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
-                        </div>
+      {/* Header */}
+      <div className="absolute top-0 left-0 right-0 h-16 bg-[#17243D] shadow-xl flex items-center justify-between px-6 z-20">
+        <div className="w-15 h-15 flex items-center justify-center">
+          <img src="images/logoPIC.png" alt="Escudo" className="h-full w-auto" />
+        </div>
+      </div>
 
-                        {/* Campo para correo electrónico */}
-                        <div className="mb-3">
-                            <label className="mb-2 block text-sm font-semibold">Correo electrónico</label>
-                            <input type="email" placeholder="Ingresa tu correo electrónico" className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
-                        </div>
+      {/* Card */}
+      <div className="relative z-10 w-full max-w-md bg-white rounded-3xl shadow-xl p-8 mx-4 my-8 mt-24 border border-gray-200">
 
-                        {/* Campo para contraseña */}
-                        <div className="mb-3 relative">
-                            <label className="mb-2 block text-sm font-semibold">Contraseña</label>
-                            <div className="relative">
-                                <input
-                                    type={showPassword ? "text" : "password"} // Cambia el tipo del input entre 'text' y 'password' según el estado
-                                    placeholder="********************"
-                                    className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500 pr-10"
-                                />
-                                {/* Botón para mostrar/ocultar la contraseña */}
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)} // Cambia el estado para mostrar/ocultar la contraseña
-                                    className="absolute top-2 right-3 text-gray-500 hover:text-gray-700"
-                                >
-                                    {/* Icono que cambia según el estado de la contraseña */}
-                                    {showPassword ? (
-                                        <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A9.956 9.956 0 0112 19c-4.418 0-8.165-2.928-9.53-7a10.005 10.005 0 0119.06 0 9.956 9.956 0 01-1.845 3.35M9.9 14.32a3 3 0 114.2-4.2m.5 3.5l3.8 3.8m-3.8-3.8L5.5 5.5" />
-                                        </svg>
-                                    ) : (
-                                        <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm-9.95 0a9.96 9.96 0 0119.9 0m-19.9 0a9.96 9.96 0 0119.9 0M3 3l18 18" />
-                                        </svg>
-                                    )}
-                                </button>
-                            </div>
-                        </div>
+        <h1 className="text-3xl font-bold text-center mb-0 mt-4">
+          <span className="text-[#F5BD45]">REGISTRARSE</span>
+        </h1>
 
-                        {/* Botón para enviar el formulario */}
-                        <div className="mb-3">
-                            <button className="bg-gray-500 text-slate-300 border py-2 w-full rounded-xl mt-5 hover:scale-105 duration-300 hover:bg-gray-900 hover:text-white">Registrarse</button>
-                        </div>
+        <small className="text-gray-600 block mb-6 text-center text-sm">
+          Por favor completa tus datos
+        </small>
 
-                    </form>
+        <form className="space-y-4" onSubmit={handleSubmit(registerUser)}>
 
-                    {/* Enlace para iniciar sesión si ya tiene una cuenta */}
-                    <div className="mt-3 text-sm flex justify-between items-center">
-                        <p>¿Ya posees una cuenta?</p>
-                        <Link to="/login" className="py-2 px-5 bg-gray-500 text-slate-300 border rounded-xl hover:scale-110 duration-300 hover:bg-gray-900">Iniciar sesión</Link>
-                    </div>
+          {/* Nombre */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-gray-700">
+              Nombre
+            </label>
+            <input
+              type="text"
+              placeholder="Ingresa tu nombre"
+              className="block w-full rounded-full border border-gray-300 py-2 px-4 text-gray-700"
+              {...register("nombre", { required: "El nombre es obligatorio" })}
+            />
+            {errors.nombre && (
+              <p className="text-red-700 text-sm mt-1">{errors.nombre.message}</p>
+            )}
+          </div>
 
-                </div>
+          {/* Apellido */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-gray-700">
+              Apellido
+            </label>
+            <input
+              type="text"
+              placeholder="Ingresa tu apellido"
+              className="block w-full rounded-full border border-gray-300 py-2 px-4 text-gray-700"
+              {...register("apellido", { required: "El apellido es obligatorio" })}
+            />
+            {errors.apellido && (
+              <p className="text-red-700 text-sm mt-1">{errors.apellido.message}</p>
+            )}
+          </div>
 
+
+          
+
+          {/* Correo */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-gray-700">
+              Correo Electrónico
+            </label>
+            <input
+              type="email"
+              placeholder="Ingresa tu correo"
+              className="block w-full rounded-full border border-gray-300 py-2 px-4 text-gray-700"
+              {...register("email", { required: "El correo electrónico es obligatorio" })}
+            />
+            {errors.email && (
+              <p className="text-red-700 text-sm mt-1">{errors.email.message}</p>
+            )}
+          </div>
+
+          {/* Contraseña */}
+          <div className="relative">
+            <label className="mb-2 block text-sm font-semibold text-gray-700">
+              Contraseña
+            </label>
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="********************"
+                className="block w-full rounded-full border border-gray-300 py-2 px-4 pr-10 text-gray-700"
+                {...register("password", { required: "La contraseña es obligatoria" })}
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-1/2 -translate-y-1/2 right-3 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
+              </button>
             </div>
 
-            {/* Sección con imagen de fondo, solo visible en pantallas grandes */}
-            <div className="w-full sm:w-1/2 h-1/3 sm:h-screen bg-[url('/public/images/dogregister.jpg')] bg-no-repeat bg-cover bg-center sm:block hidden"></div>
+            {errors.password && (
+              <p className="text-red-700 text-sm mt-1">{errors.password.message}</p>
+            )}
+          </div>
+
+          {/* Botón Registro */}
+          <button
+            type="submit"
+            className="py-2 w-full text-center bg-[#17243D] text-white rounded-full hover:scale-105 duration-300 hover:bg-[#1F3059]"
+          >
+            Registrarse
+          </button>
+        </form>
+
+        {/* Enlace a Login */}
+        <div className="mt-6 flex justify-between text-sm">
+          <Link to="/" className="text-gray-600 hover:text-gray-900 underline">
+            Regresar
+          </Link>
+          <Link
+            to="/login"
+            className="py-2 px-5 bg-[#F5BD45] text-white rounded-full hover:scale-105 duration-300 hover:bg-[#d9a43d]"
+          >
+            Iniciar Sesión
+          </Link>
         </div>
-    );
+
+      </div>
+    </div>
+  );
 };
+
+export default Register;
