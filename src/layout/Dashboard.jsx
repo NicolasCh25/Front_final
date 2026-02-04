@@ -119,13 +119,7 @@ const Dashboard = () => {
                     {/* LINKS */}
                     <ul className="flex gap-10 font-semibold text-lg">
 
-                        <Link
-                            className={`${urlActual === '/dashboard' ? 'text-[#F5BD45] underline' : 'hover:text-[#F5BD45]'}`}
-                            to="/dashboard"
-                        >
-                            Panel
-                        </Link>
-
+                       
                         {/* 3️⃣ CONDICIONAL NAV: Ocultar Perfil y Crear si es invitado */}
                         {rol !== "invitado" && (
                             <Link
@@ -156,7 +150,7 @@ const Dashboard = () => {
                             className={`${urlActual === '/dashboard/chat' ? 'text-[#F5BD45] underline' : 'hover:text-[#F5BD45]'}`}
                             to="/dashboard/chat"
                         >
-                            Charlar
+                            Chatbox
                         </Link>
                     </ul>
 
