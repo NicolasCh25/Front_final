@@ -35,7 +35,7 @@ const Login = () => {
     if (response) {
       setToken(response.token);         
       setRolGlobal(response.rol);       
-      navigate("/dashboard");
+      navigate("/dashboard/list");
     }
   };
 
