@@ -2,14 +2,14 @@ import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // true para puerto 465, false para otros puertos
+    port: 587,            // ⚠️ CAMBIO: Usamos 587 en lugar de 465
+    secure: false,        // ⚠️ CAMBIO: false para puerto 587
     auth: {
-        user: process.env.USER_MAILTRAP, // Tu correo Gmail
-        pass: process.env.PASS_MAILTRAP  // Tu contraseña de aplicación (16 caracteres)
+        user: process.env.USER_MAILTRAP,
+        pass: process.env.PASS_MAILTRAP
     },
     tls: {
-        rejectUnauthorized: false // Ayuda a evitar errores de certificados en servidores compartidos
+        rejectUnauthorized: false // Ignorar certificados auto-firmados si los hubiera
     }
 });
 
@@ -25,7 +25,7 @@ const sendMail = async (userMail, subject, html) => {
         return info;
     } catch (error) {
         console.error("❌ Error enviando email:", error);
-        throw error; // Lanzar el error para que el controlador sepa que falló
+        throw error; 
     }
 };
 
