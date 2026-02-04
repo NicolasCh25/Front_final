@@ -1,4 +1,4 @@
-# 🎨 Frontend – Sistema Web Informativo de Proyectos de Integración Curricular (PIC)
+# 🎨 Componente Frontend – Sistema Web Informativo de Proyecto de Integración Curricular
 
 **Trabajo de Integración Curricular – ESFOT**  
 Escuela Politécnica Nacional
