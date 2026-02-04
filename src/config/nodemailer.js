@@ -1,15 +1,18 @@
 import nodemailer from 'nodemailer';
 
-// Creación del Transporter para Gmail
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // ✅ Esto configura host y puertos automáticamente para Gmail
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // true para puerto 465, false para otros puertos
     auth: {
-        user: process.env.USER_MAILTRAP, // Tu correo de Gmail
-        pass: process.env.PASS_MAILTRAP  // Tu contraseña de aplicación de 16 letras
+        user: process.env.USER_MAILTRAP, // Tu correo Gmail
+        pass: process.env.PASS_MAILTRAP  // Tu contraseña de aplicación (16 caracteres)
+    },
+    tls: {
+        rejectUnauthorized: false // Ayuda a evitar errores de certificados en servidores compartidos
     }
 });
 
-// Función genérica para enviar correos
 const sendMail = async (userMail, subject, html) => {
     try {
         const info = await transporter.sendMail({
@@ -18,11 +21,11 @@ const sendMail = async (userMail, subject, html) => {
             subject: subject,
             html: html
         });
-        console.log("Mensaje enviado: %s", info.messageId);
+        console.log("✅ Correo enviado con éxito. ID:", info.messageId);
         return info;
     } catch (error) {
-        console.log("Error al enviar correo: ", error);
-        throw error; // Lanzamos el error para que el controlador sepa que falló
+        console.error("❌ Error enviando email:", error);
+        throw error; // Lanzar el error para que el controlador sepa que falló
     }
 };
 
