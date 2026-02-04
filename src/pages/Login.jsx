@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { Link, useNavigate } from "react-router"; // Ajusta si es 'react-router-dom'
+import { Link, useNavigate } from "react-router"; 
 import { useForm } from "react-hook-form";
 import { ToastContainer } from "react-toastify";
 import { useFetch } from "../hooks/useFetch";
@@ -14,7 +14,6 @@ const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const fetchDataBackend = useFetch();
 
-  // ⬇️ Traemos las funciones del store
   const { setToken, setRol: setRolGlobal } = storeAuth();
 
   const handleLogin = async (dataForm) => {
@@ -35,15 +34,16 @@ const Login = () => {
     if (response) {
       setToken(response.token);         
       setRolGlobal(response.rol);       
+      // ✅ CAMBIO 1: Redirigir a /dashboard/list
       navigate("/dashboard/list");
     }
   };
 
-  // ✅ NUEVA FUNCIÓN: Ingreso como invitado
   const handleInvitado = () => {
-    setToken("TOKEN_INVITADO"); // Token falso para pasar la protección de rutas
-    setRolGlobal("invitado");   // Rol específico para restringir botones
-    navigate("/dashboard/listar"); // Lo mandamos directo a listar
+    setToken("TOKEN_INVITADO"); 
+    setRolGlobal("invitado");   
+    // ✅ CAMBIO 2: Redirigir a /dashboard/list
+    navigate("/dashboard/list"); 
   };
 
   return (
@@ -147,7 +147,7 @@ const Login = () => {
             Iniciar Sesión
           </button>
 
-          {/* ✅ NUEVO BOTÓN: INVITADO */}
+          {/* Botón invitado */}
           <button
             type="button"
             onClick={handleInvitado}
