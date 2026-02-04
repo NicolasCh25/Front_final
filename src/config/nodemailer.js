@@ -1,46 +1,29 @@
-// --- Enviar correo de confirmación de registro ---
-const sendMailToRegister = (userMail, token) => {
+import nodemailer from 'nodemailer';
 
-    return sendMail(
-        userMail,
-        "Bienvenido a SMARTVET",
-        `
-            <h1>Confirma tu cuenta</h1>
-            <p>Hola, haz clic en el siguiente enlace para confirmar tu cuenta:</p>
+// Creación del Transporter para Gmail
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // ✅ Esto configura host y puertos automáticamente para Gmail
+    auth: {
+        user: process.env.USER_MAILTRAP, // Tu correo de Gmail
+        pass: process.env.PASS_MAILTRAP  // Tu contraseña de aplicación de 16 letras
+    }
+});
 
-            <a href="${process.env.URL_FRONTEND}confirmar/${token}">
-                Confirmar cuenta
-            </a>
+// Función genérica para enviar correos
+const sendMail = async (userMail, subject, html) => {
+    try {
+        const info = await transporter.sendMail({
+            from: process.env.USER_MAILTRAP,
+            to: userMail,
+            subject: subject,
+            html: html
+        });
+        console.log("Mensaje enviado: %s", info.messageId);
+        return info;
+    } catch (error) {
+        console.log("Error al enviar correo: ", error);
+        throw error; // Lanzamos el error para que el controlador sepa que falló
+    }
+};
 
-            <hr>
-            <footer>El equipo de SMARTVET te da la más cordial bienvenida.</footer>
-        `
-    )
-}
-
-
-
-// --- Enviar correo para recuperar contraseña ---
-const sendMailToRecoveryPassword = (userMail, token) => {
-
-    return sendMail(
-        userMail,
-        "Recupera tu contraseña",
-        `
-            <h1>SMARTVET - 🐶 😺</h1>
-            <p>Has solicitado restablecer tu contraseña.</p>
-
-            <a href="${process.env.URL_FRONTEND}reset/${token}">
-                Clic para restablecer tu contraseña
-            </a>
-
-            <hr>
-            <footer>El equipo de SMARTVET te da la más cordial bienvenida.</footer>
-        `
-    )
-}
-
-module.exports = {
-    sendMailToRegister,
-    sendMailToRecoveryPassword
-}
+export default sendMail;
