@@ -17,7 +17,10 @@ export const Register = () => {
   } = useForm();
 
   const registerUser = async (dataForm) => {
-    const url = `${import.meta.env.VITE_BACKEND_URL}/registro`;
+    // ✅ CORRECCIÓN IMPORTANTE:
+    // Agregamos '/administrador' para que coincida con tu backend: router.post('/administrador/registro', ...)
+    const url = `${import.meta.env.VITE_BACKEND_URL}/administrador/registro`;
+    
     await fetchDataBackend(url, dataForm, "POST");
   };
 
@@ -26,14 +29,15 @@ export const Register = () => {
 
       <ToastContainer />
 
-      {/* Fondo */}
-      <div className="absolute inset-0 bg-[url('/public/images/esfot.jpg')] bg-no-repeat bg-cover bg-center opacity-40"></div>
+      {/* Fondo - Corregida la ruta para Vite (sin /public) */}
+      <div className="absolute inset-0 bg-[url('/images/esfot.jpg')] bg-no-repeat bg-cover bg-center opacity-40"></div>
       <div className="absolute inset-0 bg-black/40"></div>
 
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 h-16 bg-[#17243D] shadow-xl flex items-center justify-between px-6 z-20">
         <div className="w-15 h-15 flex items-center justify-center">
-          <img src="images/logoPIC.png" alt="Escudo" className="h-full w-auto" />
+          {/* Corregida la ruta a absoluta: /images/... */}
+          <img src="/images/logoPIC.png" alt="Escudo" className="h-full w-auto" />
         </div>
       </div>
 
@@ -82,8 +86,6 @@ export const Register = () => {
             )}
           </div>
 
-
-          
 
           {/* Correo */}
           <div>
